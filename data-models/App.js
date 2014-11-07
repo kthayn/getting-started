@@ -8,8 +8,9 @@ Ext.define('Rally.gettingstarted.DataModels', {
      * The app execution entry point
      * _getStoryModel should be called here
      */
-    launch: function() {
 
+    launch: function() {
+        this._getStoryModel();
     },
 
     /**
@@ -17,7 +18,11 @@ Ext.define('Rally.gettingstarted.DataModels', {
      * When complete, call _createStory
      */
     _getStoryModel: function() {
-        
+        console.log("Now getting User Story Model");
+        Rally.data.ModelFactory.getModel({
+        type: 'UserStory',
+        success: this._createStory
+        });
     },
 
     /**
@@ -26,7 +31,18 @@ Ext.define('Rally.gettingstarted.DataModels', {
      * When complete, call _readStory
      */
     _createStory: function(model) {
+        console.log("Let's create some magic!");
+        var newStory = Ext.create(model, {
+            Name: 'App Awesomesauce!',
+            Description: 'How do you like me now?!',
+            ScheduleState: 'In-Progress'
+        });
 
+        console.log("Saving the story");
+        newStory.save({
+            callback: this._readStory,
+            scope: this
+        });
     },
 
     /**
@@ -35,7 +51,13 @@ Ext.define('Rally.gettingstarted.DataModels', {
      * When complete call _printStory
      */
     _readStory: function(story, operation) {
+        console.log("Reading the Story record");
         var model = story.self;
+        model.load(story.getId(), {
+            fetch: ['Name', 'State', 'Owner'],
+            callback: this._printStory,
+            scope: this
+            });
     },
 
     /**
