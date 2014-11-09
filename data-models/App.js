@@ -1,3 +1,4 @@
+
 /**
  * This example app performs a full CRUD lifecycle of a user story.
  */
@@ -21,7 +22,8 @@ Ext.define('Rally.gettingstarted.DataModels', {
         console.log("Now getting User Story Model");
         Rally.data.ModelFactory.getModel({
         type: 'UserStory',
-        success: this._createStory
+        success: this._createStory,
+	scope: this
         });
     },
 
@@ -35,7 +37,11 @@ Ext.define('Rally.gettingstarted.DataModels', {
         var newStory = Ext.create(model, {
             Name: 'App Awesomesauce!',
             Description: 'How do you like me now?!',
-            ScheduleState: 'In-Progress'
+            ScheduleState: 'In-Progress',
+            PlanEstimate: 2,
+            
+            // TODO:  How do I assign an owner?
+            Owner: 'Kate'
         });
 
         console.log("Saving the story");
@@ -54,7 +60,7 @@ Ext.define('Rally.gettingstarted.DataModels', {
         console.log("Reading the Story record");
         var model = story.self;
         model.load(story.getId(), {
-            fetch: ['Name', 'State', 'Owner'],
+            fetch: ['FormattedId', 'Name', 'ScheduleState', 'Owner', 'PlanEstimate'],
             callback: this._printStory,
             scope: this
             });
@@ -67,8 +73,13 @@ Ext.define('Rally.gettingstarted.DataModels', {
      * Call _updateStory when done.
      */
     _printStory: function(story, operation) {
-
-    },
+        console.log('FormattedID: ' , story.get('FormattedID'));
+        console.log('Schedule State: ' , story.get('ScheduleState'));
+        console.log('Plan Estimate: ', story.get('PlanEstimate'));    	
+        console.log('Owner: ' , story.get('Owner.DisplayName'));
+	
+        this._updateStory(story);
+     },
 
     /**
      * Set the story's PlanEstimate to 5.
@@ -76,8 +87,18 @@ Ext.define('Rally.gettingstarted.DataModels', {
      * When complete call _deleteStory
      */
     _updateStory: function(story) {
+        console.log('Begin making more awesome!');
 
+        story.set('PlanEstimate', 5);
+
+        story.save({
+            callback: this._deleteStory,
+            scope: this
+        });
+
+        console.log('Plan Estimate: ', story.get('PlanEstimate'));
     },
+
 
     /**
      * Delete the story.
@@ -85,6 +106,10 @@ Ext.define('Rally.gettingstarted.DataModels', {
      * When complete console.log a success message.
      */
     _deleteStory: function(story, operation) {
-
+        console.log('Beging deletion....');
+        story.destory({
+            callback: this._complete,
+            scope: this
+        });
     }
 });
