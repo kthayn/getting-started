@@ -106,7 +106,7 @@ Ext.define('Rally.gettingstarted.DataModels', {
      * When complete console.log a success message.
      */
     _deleteStory: function(story, operation) {
-        console.log('Beging deletion....');
+        console.log('Begining deletion....');
         story.destory({
             callback: this._complete,
             scope: this
