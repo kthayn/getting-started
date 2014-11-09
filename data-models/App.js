@@ -92,7 +92,7 @@ Ext.define('Rally.gettingstarted.DataModels', {
         story.set('PlanEstimate', 5);
 
         story.save({
-            callback: this._deleteStory,
+            callback: this._deleteStory(story),
             scope: this
         });
 
@@ -107,9 +107,12 @@ Ext.define('Rally.gettingstarted.DataModels', {
      */
     _deleteStory: function(story, operation) {
         console.log('Begining deletion....');
+        debugger;
         story.destory({
             callback: this._complete,
             scope: this
         });
+
+        console.log('Deletion complete!');
     }
 });
