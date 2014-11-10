@@ -41,7 +41,7 @@ Ext.define('Rally.gettingstarted.DataModels', {
             PlanEstimate: 2,
             
             // TODO:  How do I assign an owner?
-            Owner: 'Kate'
+            //Owner: 'kate@rallydev.com'
         });
 
         console.log("Saving the story");
