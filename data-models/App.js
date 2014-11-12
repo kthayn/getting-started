@@ -38,7 +38,7 @@ Ext.define('Rally.gettingstarted.DataModels', {
             Name: 'App Awesomesauce!',
             Description: 'How do you like me now?!',
             ScheduleState: 'In-Progress',
-            PlanEstimate: 2,
+            PlanEstimate: 2
             
             // TODO:  How do I assign an owner?
             //Owner: 'kate@rallydev.com'
@@ -107,8 +107,7 @@ Ext.define('Rally.gettingstarted.DataModels', {
      */
     _deleteStory: function(story, operation) {
         console.log('Begining deletion....');
-        debugger;
-        story.destory({
+        story.destroy({
             callback: this._complete,
             scope: this
         });
